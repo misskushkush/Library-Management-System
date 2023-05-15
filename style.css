@@ -1,0 +1,44 @@
+body{
+    background-color: #1d2630;
+    color: #fff;
+}
+
+#bookTable{
+    color: #fff;
+}
+
+#visitorTable{
+  color: #fff;
+}
+
+.modal{
+    color: #000;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    background-color: #1d2630;
+    color: white;
+  }  
+.navbar .navbar-nav .nav-link {
+  padding: 0.6em;
+  font-size: 1.2em;
+  transition: all 0.5s;
+}
+.navbar .navbar-brand {
+  padding: 0 0.6em;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+@media only screen and (min-width: 992px) {
+  .navbar {
+    padding: 0;
+  }
+  .navbar .navbar-nav .nav-link {
+    padding: 1em 0.7em;
+  }
+  .navbar .navbar-brand {
+    padding: 0 0.8em;
+  }
+}
+
+
