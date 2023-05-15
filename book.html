@@ -5,11 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link href="bookstyle.css" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
     <title>Book Management System</title>
 
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #ffc207;">
+        <a class="navbar-brand" href="">Library</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler8"
+            aria-controls="navbarToggler8" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler8">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="book.html">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="visitor.html">Visitors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="card.html">Cards</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="statistic.html">Statistics</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container mt-5">
         <h1 class="text-center mb-5">Book Management System</h1>
         <form action="" id="bookForm">
@@ -34,22 +57,32 @@
                 />
             </div>
             <div class="form-group mb-3">
-                <label for="genre">Genre:</label>
+                <label for="publishName">Publisher Name:</label>
                 <input
                     type="text"
-                    id="genre"
+                    id="publishName"
                     class="form-control"
-                    placeholder="Enter book genre"
+                    placeholder="Enter publisher name"
                     required
                 />
             </div>
             <div class="form-group mb-3">
-                <label for="year">Year:</label>
+                <label for="publishYear">Publish Year:</label>
                 <input
                     type="number"
-                    id="year"
+                    id="publishYear"
                     class="form-control"
                     placeholder="Enter publish year"
+                    required
+                />
+            </div>
+            <div class="form-group mb-3">
+                <label for="pageQuantity">Page Quantity:</label>
+                <input
+                    type="number"
+                    id="pageQuantity"
+                    class="form-control"
+                    placeholder="Enter pages quantity"
                     required
                 />
             </div>
@@ -79,13 +112,13 @@
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Genre</th>
-                    <th>Year</th>
+                    <th>Publisher Name</th>
+                    <th>Publish Year</th>
+                    <th>Page Quantity</th>
                     <th>Quantity</th>
                     <th>Actions</th>
                 </tr>
             </thread>
-            <tbody></tbody>
         </table>
     </div>
     
@@ -98,50 +131,60 @@
                 <div class="modal-body">
                     <form action="" id="editForm">
                         <div class="form-group mb-3">
-                            <label for="bookTitle">Book Title</label>
+                            <label for="editbookTitle">Book Title</label>
                             <input
                                 type="text"
-                                id="bookTitle"
+                                id="editbookTitle"
                                 class="form-control"
                                 placeholder="Enter book title"
                                 required
                             />
                         </div>
                         <div class="form-group mb-3">
-                            <label for="author">Author:</label>
+                            <label for="editauthor">Author:</label>
                             <input
                                 type="text"
-                                id="author"
+                                id="editauthor"
                                 class="form-control"
                                 placeholder="Enter author name"
                                 required
                             />
                         </div>
                         <div class="form-group mb-3">
-                            <label for="genre">Genre:</label>
+                            <label for="editpublishName">Publisher Name:</label>
                             <input
                                 type="text"
-                                id="genre"
+                                id="editpublishName"
                                 class="form-control"
-                                placeholder="Enter book genre"
+                                placeholder="Enter publisher name"
                                 required
                             />
                         </div>
                         <div class="form-group mb-3">
-                            <label for="year">Year:</label>
+                            <label for="editpublishYear">Publish Year:</label>
                             <input
                                 type="number"
-                                id="year"
+                                id="editpublishYear"
                                 class="form-control"
                                 placeholder="Enter publish year"
                                 required
                             />
                         </div>
                         <div class="form-group mb-3">
-                            <label for="quantity">Quantity:</label>
+                            <label for="editpageQuantity">Page Quantity:</label>
                             <input
                                 type="number"
-                                id="quantity"
+                                id="editpageQuantity"
+                                class="form-control"
+                                placeholder="Enter pages quantity"
+                                required
+                            />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="editquantity">Quantity:</label>
+                            <input
+                                type="number"
+                                id="editquantity"
                                 class="form-control"
                                 placeholder="Enter Quantity"
                                 required
@@ -149,7 +192,7 @@
                         </div>
                     <input type="hidden" id="editBookId">
                     <button class="btn btn-success" 
-                            type="submit" id="editBtn">
+                            type="" id="editBtn">
                         Save Changes
                     </button>
                     <button 
