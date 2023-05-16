@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet" type="text/css">
-    <title>Book Management System</title>
+    <title>Card Management System</title>
 
 </head>
 <body>
@@ -34,72 +34,32 @@
         </div>
     </nav>
     <div class="container mt-5">
-        <h1 class="text-center mb-5">Book Management System</h1>
-        <form action="" id="bookForm">
+        <h1 class="text-center mb-5">Card Management System</h1>
+        <form action="" id="cardForm">
             <div class="form-group mb-3">
-                <label for="bookTitle">Book Title</label>
-                <input
-                    type="text"
-                    id="bookTitle"
-                    class="form-control"
-                    placeholder="Enter book title"
-                    required
-                />
+                <label for="visitorName">Visitors:</label>
+                <select id="visitorName" class="form-control" required >
+                </select>
             </div>
             <div class="form-group mb-3">
-                <label for="author">Author:</label>
-                <input
-                    type="text"
-                    id="author"
-                    class="form-control"
-                    placeholder="Enter author name"
-                    required
-                />
+                <label for="bookName">Books:</label>
+                <select id="bookName" class="form-control" required >
+                </select>
             </div>
             <div class="form-group mb-3">
-                <label for="publishName">Publisher Name:</label>
+                <label for="borrowDate">Borrow Date:</label>
                 <input
-                    type="text"
-                    id="publishName"
+                    type="date"
+                    id="borrowDate"
                     class="form-control"
-                    placeholder="Enter publisher name"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="publishYear">Publish Year:</label>
-                <input
-                    type="number"
-                    id="publishYear"
-                    class="form-control"
-                    placeholder="Enter publish year"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="pageQuantity">Page Quantity:</label>
-                <input
-                    type="number"
-                    id="pageQuantity"
-                    class="form-control"
-                    placeholder="Enter pages quantity"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="quantity">Quantity:</label>
-                <input
-                    type="number"
-                    id="quantity"
-                    class="form-control"
-                    placeholder="Enter Quantity"
+                    placeholder="Enter the date of loan"
                     required
                 />
             </div>
             <button 
                 class="btn btn-success" 
                 type="submit" id="addBtn">
-                Add Book
+                Add Card
             </button>
             <button 
                 class="btn btn-warning ml-2" 
@@ -107,15 +67,14 @@
                 Clear All
             </button>
         </form>
-        <table class="table mt-4" id="bookTable">
+        <table class="table mt-4" id="cardTable">
             <thread>
                 <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Publisher Name</th>
-                    <th>Publish Year</th>
-                    <th>Page Quantity</th>
-                    <th>Quantity</th>
+                    <th>Name</th>
+                    <th>Book</th>
+                    <th>Borrow date</th>
+                    <th>Return date</th>
+                    <th>Penalty</th>
                     <th>Actions</th>
                 </tr>
             </thread>
@@ -126,71 +85,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Book</h4>
+                    <h4 class="modal-title">Edit Card</h4>
                 </div>
                 <div class="modal-body">
                     <form action="" id="editForm">
                         <div class="form-group mb-3">
-                            <label for="editbookTitle">Book Title</label>
+                            <label for="editreturnDate">Return Date:</label>
                             <input
-                                type="text"
-                                id="editbookTitle"
+                                type="date"
+                                id="editreturnDate"
                                 class="form-control"
-                                placeholder="Enter book title"
+                                placeholder="Enter the date of return"
                                 required
                             />
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="editauthor">Author:</label>
-                            <input
-                                type="text"
-                                id="editauthor"
-                                class="form-control"
-                                placeholder="Enter author name"
-                                required
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="editpublishName">Publisher Name:</label>
-                            <input
-                                type="text"
-                                id="editpublishName"
-                                class="form-control"
-                                placeholder="Enter publisher name"
-                                required
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="editpublishYear">Publish Year:</label>
-                            <input
-                                type="number"
-                                id="editpublishYear"
-                                class="form-control"
-                                placeholder="Enter publish year"
-                                required
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="editpageQuantity">Page Quantity:</label>
-                            <input
-                                type="number"
-                                id="editpageQuantity"
-                                class="form-control"
-                                placeholder="Enter pages quantity"
-                                required
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="editquantity">Quantity:</label>
-                            <input
-                                type="number"
-                                id="editquantity"
-                                class="form-control"
-                                placeholder="Enter Quantity"
-                                required
-                            />
-                        </div>
-                    <input type="hidden" id="editBookId">
+                    <input type="hidden" id="editCardId">
                     <button class="btn btn-success" 
                             type="" id="editBtn">
                         Save Changes
@@ -212,6 +121,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="bookscript.js"></script>
+    <script src="card.js"></script>
 </body>
 </html>
