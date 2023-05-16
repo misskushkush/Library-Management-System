@@ -11,6 +11,10 @@ body{
   color: #fff;
 }
 
+#cardTable{
+  color: #fff;
+}
+
 .modal{
     color: #000;
 }
@@ -40,5 +44,6 @@ body{
     padding: 0 0.8em;
   }
 }
+
 
 
