@@ -1,42 +1,94 @@
-let books = [];
+let books_title = [];
 
 if (localStorage.getItem("books")) {
     books = JSON.parse(localStorage.getItem("books"));
     for (let i = 0; i < books.length; i++) {
-      addBook(books[i]);
+        books_title.push(books[i].title);
     }
-  }
+    populateDropdown(books_title, "bookName");
+}
 
-function addBook(book){
-    let table = $("#bookTable tbody");
+let visitors_name = [];
+
+if (localStorage.getItem("visitors")) {
+    visitors = JSON.parse(localStorage.getItem("visitors"));
+
+    for (let i = 0; i < visitors.length; i++) {
+        visitors_name.push(visitors[i].name);
+    }
+    populateDropdown(visitors_name, "visitorName");
+}
+  
+let cards = [];
+
+if (localStorage.getItem("cards")) {
+    cards = JSON.parse(localStorage.getItem("cards"));
+    for (let i = 0; i < cards.length; i++) {
+    cards[i].penalty = calculatePenalty(cards[i]);
+    addCard(cards[i]);
+    }
+}
+
+
+function populateDropdown(array, dropdownId) {
+    let dropdown = $("#" + dropdownId);
+    
+    // Clear existing options
+    dropdown.empty();
+
+    // Add the placeholder option
+    let placeholderOption = $("<option disabled selected></option>").text(`Choose ${dropdownId}`);
+    dropdown.append(placeholderOption);
+    
+    // Iterate over the array and create options
+    for (let i = 0; i < array.length; i++) {
+        let option = $("<option></option>").text(array[i]);
+        dropdown.append(option);
+    }
+}
+
+
+function calculatePenalty(card) {
+    let returnDate = new Date(card.returnDate);
+    let currentDate = new Date();
+    let timeDiff = Math.abs(returnDate.getTime() - currentDate.getTime());
+    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    let penalty = 0;
+    if (currentDate > returnDate) {
+        penalty = diffDays * 0.10;
+    }
+    return penalty;
+}
+
+function addCard(card){
+    let table = $("#cardTable tbody");
     table.append(`
-    <tr id="${book.id}">
-    <td>${book.title}</td>
-    <td>${book.author}</td>
-    <td>${book.name}</td>
-    <td>${book.year}</td>
-    <td>${book.page}</td>
-    <td>${book.quantity}</td>
+    <tr id="${card.id}">
+    <td>${card.visitor}</td>
+    <td>${card.book}</td>
+    <td>${card.borrowDate}</td>
+    <td>${card.returnDate}</td>
+    <td>${card.penalty.toFixed(2)} UA</td>
     <td>
-        <button class="mb-1 btn btn-sm btn-warning editBtn" data-id="${book.id}">
+        <button class="mb-1 btn btn-sm btn-warning editBtn" data-id="${card.id}">
         Edit
         </button>
-        <button class="mb-1 btn btn-sm btn-danger deleteBtn" data-id="${book.id}">
+        <button class="mb-1 btn btn-sm btn-danger deleteBtn" data-id="${card.id}">
         Delete
         </button>
     </td>
     `);
     // Save updated books to local storage
-  localStorage.setItem("books", JSON.stringify(books));
+  
+  localStorage.setItem("cards", JSON.stringify(cards));
 }
 
 function clearForm(){
-    $("#bookTitle").val("");
-    $("#author").val("");
-    $("#publishName").val("");
-    $("#publishYear").val("");
-    $("#pageQuantity").val("");
-    $("#quantity").val("");
+    $("#visitorName").val("");
+    $("#bookName").val("");
+    $("#borrowDate").val("");
+    populateDropdown(visitors_name, "visitorName");
+    populateDropdown(books_title, "bookName");
 }
 
 function generateId(){
@@ -47,70 +99,73 @@ $(document).on("click", "#clearBtn", function(){
     clearForm();
 });
 
-$("#bookForm").submit(function (e){
+$("#cardForm").submit(function (e) {
     e.preventDefault();
 
-    let book = {
-        id: generateId(),
-        title: $("#bookTitle").val(),
-        author: $("#author").val(),
-        name: $("#publishName").val(),
-        year: $("#publishYear").val(),
-        page: $("#pageQuantity").val(),
-        quantity: $("#quantity").val(),
+    let borrowDate = new Date($("#borrowDate").val());
+    let returnDate = new Date(borrowDate.getTime() + 30 * 24 * 60 * 60 * 1000); // Adding 30 days
+
+    let returnYear = returnDate.getFullYear();
+    let returnMonth = ("0" + (returnDate.getMonth() + 1)).slice(-2); // Adding leading zero if necessary
+    let returnDay = ("0" + returnDate.getDate()).slice(-2); // Adding leading zero if necessary
+
+    let returnFormattedDate = `${returnYear}-${returnMonth}-${returnDay}`;
+
+  
+    let card = {
+      id: generateId(),
+      visitor: $("#visitorName option:selected").text(),
+      book: $("#bookName option:selected").text(),
+      borrowDate: $("#borrowDate").val(), // Convert to ISO string format
+      returnDate: returnFormattedDate, // Convert to ISO string format
+      penalty: 0.00,
     };
-
-    books.push(book);
-    addBook(book);
-
+  
+    cards.push(card);
+    addCard(card);
+  
+    let bookTitle = card.book;
+    let book = books.find((b) => b.title === bookTitle);
+    if (book) {
+      book.quantity--;
+      localStorage.setItem("books", JSON.stringify(books));
+    }
     clearForm();
-    localStorage.setItem('books', JSON.stringify(books));
+  
+    localStorage.setItem('cards', JSON.stringify(cards));
 });
 
 $("#editForm").submit(function (e){
     e.preventDefault();
 
-    let bookId = $("#editBookId").val();
-    let bookIndex = books.findIndex((book)=>book.id == bookId);
-    let book = books[bookIndex];
-    book.title = $("#editbookTitle").val();
-    book.author = $("#editauthor").val();
-    book.name = $("#editpublishName").val();
-    book.year = $("#editpublishYear").val();
-    book.page = $("#editpageQuantity").val();
-    book.quantity = $("#editquantity").val();
+    let cardId = $("#editCardId").val();
+    let cardIndex = cards.findIndex((card)=>card.id == cardId);
+    let card = cards[cardIndex];
+    card.returnDate = $("#editreturnDate").val();
+    card.penalty = calculatePenalty(card);
 
-
-    let row = $(`#${book.id}`);
-    row.find("td:eq(0)").text(book.title);
-    row.find("td:eq(1)").text(book.author);
-    row.find("td:eq(2)").text(book.name);
-    row.find("td:eq(3)").text(book.year);
-    row.find("td:eq(4)").text(book.page);
-    row.find("td:eq(5)").text(book.quantity);
+    let row = $(`#${card.id}`);
+    row.find("td:eq(0)").text(card.returnDate);
+    row.find("td:eq(4)").text(card.penalty.toFixed(2) + " UA");
 
     $("#editModal").modal("hide");
     // Save updated books to local storage
-  localStorage.setItem("books", JSON.stringify(books));
+  localStorage.setItem("cards", JSON.stringify(cards));
 
 });
 
 $(document).on("click", ".editBtn", function () {
-    let bookId = $(this).data("id");
+    let cardId = $(this).data("id");
 
-    let bookIndex = books.findIndex((book) => book.id == bookId);
-    let book = books[bookIndex];
+    let cardIndex = cards.findIndex((card) => card.id == cardId);
+    let card = cards[cardIndex];
 
-    $("#editbookTitle").val(book.title);
-    $("#editauthor").val(book.author);
-    $("#editpublishName").val(book.name);
-    $("#editpublishYear").val(book.year);
-    $("#editpageQuantity").val(book.page);
-    $("#editquantity").val(book.quantity);
-    $("#editBookId").val(book.id);
+    $("#editreturnDate").val(card.returnDate);
+    $("#editCardId").val(card.id);
+    card.penalty = calculatePenalty(card);
 
     $("#editModal").modal("show");
-    localStorage.setItem('books', JSON.stringify(books));
+    localStorage.setItem('cards', JSON.stringify(cards));
 });
 
 $(document).on("click", "#clsBtn", function () {
@@ -118,15 +173,21 @@ $(document).on("click", "#clsBtn", function () {
 });
 
 $(document).on("click", ".deleteBtn", function () {
-    let bookId = $(this).data("id");
+    let cardId = $(this).data("id");
 
-    let bookIndex = books.findIndex((book) => book.id == bookId);
-    let book = books[bookIndex];
+    let cardIndex = cards.findIndex((card) => card.id == cardId);
+    let card = cards[cardIndex];
 
-    if (confirm(`Are you sure you want to delete 
-    ${book.title}`)) {
-        books.splice(bookIndex, 1);
-        $(`#${book.id}`).remove();
+    let bookTitle = card.book;
+    let book = books.find((b) => b.title === bookTitle);
+
+    if (book) {
+      book.quantity++;
+      localStorage.setItem("books", JSON.stringify(books));
     }
-    localStorage.setItem('books', JSON.stringify(books));
+    
+    cards.splice(cardIndex, 1);
+    $(`#${card.id}`).remove();
+    
+    localStorage.setItem('cards', JSON.stringify(cards));
 });
