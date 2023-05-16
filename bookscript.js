@@ -47,7 +47,7 @@ $(document).on("click", "#clearBtn", function(){
     clearForm();
 });
 
-$("#bookForm").submit(function (e){
+$("#addForm").submit(function (e){
     e.preventDefault();
 
     let book = {
@@ -63,7 +63,13 @@ $("#bookForm").submit(function (e){
     books.push(book);
     addBook(book);
 
-    clearForm();
+    $("#addModal").modal("hide");
+    localStorage.setItem('books', JSON.stringify(books));
+});
+
+$(document).on("click", "#createBtn", function () {
+
+    $("#addModal").modal("show");
     localStorage.setItem('books', JSON.stringify(books));
 });
 
@@ -115,6 +121,7 @@ $(document).on("click", ".editBtn", function () {
 
 $(document).on("click", "#clsBtn", function () {
     $("#editModal").modal("hide");
+    $("#addModal").modal("hide");
 });
 
 $(document).on("click", ".deleteBtn", function () {
