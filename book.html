@@ -35,78 +35,11 @@
     </nav>
     <div class="container mt-5">
         <h1 class="text-center mb-5">Book Management System</h1>
-        <form action="" id="bookForm">
-            <div class="form-group mb-3">
-                <label for="bookTitle">Book Title</label>
-                <input
-                    type="text"
-                    id="bookTitle"
-                    class="form-control"
-                    placeholder="Enter book title"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="author">Author:</label>
-                <input
-                    type="text"
-                    id="author"
-                    class="form-control"
-                    placeholder="Enter author name"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="publishName">Publisher Name:</label>
-                <input
-                    type="text"
-                    id="publishName"
-                    class="form-control"
-                    placeholder="Enter publisher name"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="publishYear">Publish Year:</label>
-                <input
-                    type="number"
-                    id="publishYear"
-                    class="form-control"
-                    placeholder="Enter publish year"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="pageQuantity">Page Quantity:</label>
-                <input
-                    type="number"
-                    id="pageQuantity"
-                    class="form-control"
-                    placeholder="Enter pages quantity"
-                    required
-                />
-            </div>
-            <div class="form-group mb-3">
-                <label for="quantity">Quantity:</label>
-                <input
-                    type="number"
-                    id="quantity"
-                    class="form-control"
-                    placeholder="Enter Quantity"
-                    required
-                />
-            </div>
-            <button 
-                class="btn btn-success" 
-                type="submit" id="addBtn">
-                Add Book
-            </button>
-            <button 
-                class="btn btn-warning ml-2" 
-                type="button" id="clearBtn">
-                Clear All
-            </button>
-        </form>
+                <button 
+                    class="btn btn-success" 
+                    type="submit" id="createBtn">
+                    Add Book
+                </button>
         <table class="table mt-4" id="bookTable">
             <thread>
                 <tr>
@@ -120,6 +53,98 @@
                 </tr>
             </thread>
         </table>
+    </div>
+
+    <div class="modal fade" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Book</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="addForm">
+                        <div class="form-group mb-3">
+                        <label for="bookTitle">Book Title:</label>
+                        <input
+                            type="text"
+                            id="bookTitle"
+                            class="form-control"
+                            placeholder="Enter book title"
+                            required
+                        />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="author">Author:</label>
+                            <input
+                                type="text"
+                                id="author"
+                                class="form-control"
+                                placeholder="Enter author name"
+                                required
+                            />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="publishName">Publisher Name:</label>
+                            <input
+                                type="text"
+                                id="publishName"
+                                class="form-control"
+                                placeholder="Enter publisher name"
+                                required
+                            />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="publishYear">Publish Year:</label>
+                            <input
+                                type="number"
+                                id="publishYear"
+                                class="form-control"
+                                placeholder="Enter publish year"
+                                required
+                            />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="pageQuantity">Page Quantity:</label>
+                            <input
+                                type="number"
+                                id="pageQuantity"
+                                class="form-control"
+                                placeholder="Enter pages quantity"
+                                required
+                            />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="quantity">Quantity:</label>
+                            <input
+                                type="number"
+                                id="quantity"
+                                class="form-control"
+                                placeholder="Enter Quantity"
+                                required
+                            />
+                        </div>
+                        <input type="hidden" id="editBookId">
+                        <button class="btn btn-success" 
+                                type="" id="addBtn">
+                            Add
+                        </button>
+                        <button 
+                            class="btn btn-danger ml-2" 
+                            type="button" 
+                            id="clsBtn" 
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button 
+                        class="btn btn-warning ml-2" 
+                        type="button" id="clearBtn">
+                        Clear All
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="modal fade" id="editModal">
