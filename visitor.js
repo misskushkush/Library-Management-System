@@ -117,3 +117,72 @@ $(document).on("click", ".deleteBtn", function () {
 
     localStorage.setItem("visitors", JSON.stringify(visitors));
 });
+
+
+function getVisitorsFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("visitors")) || [];
+}
+
+// Function to filter visitors based on the search input
+function filterVisitorsByName(visitors, searchName) {
+    if (!searchName) {
+        return visitors; 
+    }
+
+    return visitors.filter(visitor => visitor.name.toLowerCase().includes(searchName.toLowerCase()));
+}
+  
+  // Function to sort visitors based on the selected characteristic
+function sortVisitors(visitors, sortCharacteristic) {
+    return visitors.sort((a, b) => {
+      const valueA = isNumeric(a[sortCharacteristic]) ? parseFloat(a[sortCharacteristic]) : a[sortCharacteristic];
+      const valueB = isNumeric(b[sortCharacteristic]) ? parseFloat(b[sortCharacteristic]) : b[sortCharacteristic];
+  
+      if (valueA < valueB) {
+        return -1;
+      } else if (valueA > valueB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
+  
+  // Helper function to check if a value is numeric
+  function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  }
+  
+  // Function to populate the table with visitors
+function populateVisitorTable(visitors) {
+    let table = $("#visitorTable tbody");
+    table.empty(); // Clear existing table rows
+    let row = $("<tr></tr>");
+    row.append($("<th></th>").text("Name"));
+    row.append($("<th></th>").text("Surname"));
+    row.append($("<th></th>").text("Phone"));
+    row.append($("<th></th>").text("Actions"));
+
+    table.append(row);
+
+    visitors.forEach(visitor => {
+        addVisitor(visitor);
+        });
+
+}
+  
+// Function to handle the search button click event
+$("#searchBtn").click(function() {
+    let searchName = $("#searchInput").val();
+    let visitors = getVisitorsFromLocalStorage();
+    let filteredVisitors = filterVisitorsByName(visitors, searchName);
+    populateVisitorTable(filteredVisitors);
+});
+  
+// Function to handle the sort button click event
+$(".sort-btn").click(function() {
+    let sortCharacteristic = $(this).data("sort");
+    let visitors = getVisitorsFromLocalStorage();
+    let sortedvisitors = sortVisitors(visitors, sortCharacteristic);
+    populateVisitorTable(sortedvisitors);
+});
