@@ -191,3 +191,83 @@ $(document).on("click", ".deleteBtn", function () {
     
     localStorage.setItem('cards', JSON.stringify(cards));
 });
+
+
+function getCardsFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("cards")) || [];
+}
+
+function populateCardTable(cards) {
+    let table = $("#cardTable tbody");
+    table.empty(); // Clear existing table rows
+    let row = $("<tr></tr>");
+    row.append($("<th></th>").text("Name"));
+    row.append($("<th></th>").text("Book"));
+    row.append($("<th></th>").text("Borrow date"));
+    row.append($("<th></th>").text("Return date"));
+    row.append($("<th></th>").text("Penalty"));
+    row.append($("<th></th>").text("Actions"));
+
+    table.append(row);
+
+    cards.forEach(card => {
+        addCard(card);
+        });
+
+}
+
+// Helper function to check if a value is a valid date in the format "YYYY-MM-DD"
+function isDateValue(value) {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    return dateRegex.test(value);
+}
+
+function getValueForSorting(value) {
+   const parts = value.split("-");
+   return new Date(parts[0], parts[1] - 1, parts[2]);
+}
+
+function sortCards(cards, sortCharacteristic) {
+    return cards.sort((a, b) => {
+      const valueA = isDateValue(a[sortCharacteristic]) ? getValueForSorting(a[sortCharacteristic]) : a[sortCharacteristic];
+      const valueB = isDateValue(b[sortCharacteristic]) ? getValueForSorting(b[sortCharacteristic]) : b[sortCharacteristic];
+  
+      if (valueA < valueB) {
+        return -1;
+      } else if (valueA > valueB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+}
+
+
+// Function to handle the sort button click event
+$(".sort-btn").click(function() {
+    let sortCharacteristic = $(this).data("sort");
+    let cards = getCardsFromLocalStorage();
+    let sortedcards = sortCards(cards, sortCharacteristic);
+    populateCardTable(sortedcards);
+});
+
+function filterCardsBysearchReturnDate(cards, searchReturnDate) {
+    if (!searchReturnDate) {
+      return cards; // No search query provided, return all cards
+    }
+  
+    const filteredCards = cards.filter((card) => {
+      const returnDate = card.returnDate.substring(0, 10); // Extract the date part from the ISO string
+      return returnDate === searchReturnDate;
+    });
+  
+    return filteredCards;
+}
+
+// Function to handle the search button click event
+$("#searchBtn").click(function() {
+    let searchReturnDate = $("#searchInput").val();
+    let cards = getCardsFromLocalStorage();
+    let filteredCards = filterCardsBysearchReturnDate(cards, searchReturnDate);
+    populateCardTable(filteredCards);
+});
