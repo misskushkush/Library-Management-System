@@ -70,6 +70,7 @@ $("#addForm").submit(function (e){
 $(document).on("click", "#createBtn", function () {
 
     $("#addModal").modal("show");
+    clearForm();
     localStorage.setItem('books', JSON.stringify(books));
 });
 
@@ -137,3 +138,79 @@ $(document).on("click", ".deleteBtn", function () {
     }
     localStorage.setItem('books', JSON.stringify(books));
 });
+
+
+
+function getBooksFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("books")) || [];
+  }
+
+  // Function to filter books based on the search input
+  function filterBooksByTitle(books, searchTitle) {
+    if (!searchTitle) {
+      return books; // Return all books if searchTitle is empty
+    }
+  
+    return books.filter(book => book.title.toLowerCase().includes(searchTitle.toLowerCase()));
+  }
+  
+  // Function to sort books based on the selected characteristic
+function sortBooks(books, sortCharacteristic) {
+    return books.sort((a, b) => {
+      const valueA = isNumeric(a[sortCharacteristic]) ? parseFloat(a[sortCharacteristic]) : a[sortCharacteristic];
+      const valueB = isNumeric(b[sortCharacteristic]) ? parseFloat(b[sortCharacteristic]) : b[sortCharacteristic];
+  
+      if (valueA < valueB) {
+        return -1;
+      } else if (valueA > valueB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
+  
+  // Helper function to check if a value is numeric
+  function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  }
+  
+  // Function to populate the table with books
+  function populateBookTable(books) {
+    let table = $("#bookTable tbody");
+    table.empty(); // Clear existing table rows
+    let row = $("<tr></tr>");
+    row.append($("<th></th>").text("Title"));
+    row.append($("<th></th>").text("Author"));
+    row.append($("<th></th>").text("Publisher Name"));
+    row.append($("<th></th>").text("Publish Year"));
+    row.append($("<th></th>").text("Page Quantity"));
+    row.append($("<th></th>").text("Quantity"));
+    row.append($("<th></th>").text("Actions"));
+
+    table.append(row);
+  
+    books.forEach(book => {
+        addBook(book);
+      });
+    
+  }
+  
+  // Function to handle the search button click event
+  $("#searchBtn").click(function() {
+    let searchTitle = $("#searchInput").val();
+    let books = getBooksFromLocalStorage();
+    let filteredBooks = filterBooksByTitle(books, searchTitle);
+    populateBookTable(filteredBooks);
+  });
+  
+  // Function to handle the sort button click event
+  $(".sort-btn").click(function() {
+    let sortCharacteristic = $(this).data("sort");
+    let books = getBooksFromLocalStorage();
+    let sortedBooks = sortBooks(books, sortCharacteristic);
+    populateBookTable(sortedBooks);
+  });
+  
+  
+  
